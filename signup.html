@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - TrainUp</title>
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  /* Caminho relativo da imagem de fundo */
+  background: url('images/fundo_signup.png') no-repeat center center fixed;
+  background-size: cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box {
+  background: rgba(255,255,255,0.85);
+  border-radius:12px;
+  padding:30px;
+  width:350px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  text-align:center;
+}
+
+h2 { color:#007bff; margin-bottom:20px; }
+
+input {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover { background:#0056b3; }
+
+#mensagem { margin-top:15px; font-weight:bold; }
+a { color:#007bff; text-decoration:none; }
+a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Registrar Conta - TrainUp</h2>
+<input type="text" id="nome" placeholder="Nome completo">
+<input type="email" id="email" placeholder="Email">
+<input type="text" id="telefone" placeholder="Telefone">
+<button onclick="signUp()">Registrar</button>
+<p id="mensagem"></p>
+<p>Já tem uma conta? <a href="login.html">Entrar</a></p>
+</div>
+
+<script>
+async function signUp(){
+  const nome=document.getElementById('nome').value;
+  const email=document.getElementById('email').value;
+  const telefone=document.getElementById('telefone').value;
+  const res=await fetch('http://localhost:8080/signup',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nome,email,telefone})
+  });
+  const data=await res.json();
+  const msg=document.getElementById('mensagem');
+  msg.innerText=data.mensagem;
+  msg.style.color=data.status==='sucesso'?'green':'red';
+}
+</script>
+
+</body>
+</html>

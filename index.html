@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - TrainUp</title>
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: url('images/fundo_login.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box {
+  background: rgba(255,255,255,0.85);
+  border-radius:12px;
+  padding:30px;
+  width:350px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  text-align:center;
+}
+
+h2 { color:#007bff; margin-bottom:20px; }
+
+input {
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover { background:#0056b3; }
+
+#mensagem { margin-top:15px; font-weight:bold; }
+a { color:#007bff; text-decoration:none; }
+a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Login TrainUp</h2>
+<input type="text" id="loginEmail" placeholder="Email ou Telefone">
+<input type="text" id="loginCodigo" placeholder="Código de Acesso">
+<button onclick="loginUser()">Entrar</button>
+<p id="mensagem"></p>
+<p>Não tem uma conta? <a href="signup.html">Registre-se</a></p>
+</div>
+
+<script>
+async function loginUser(){
+  const email=document.getElementById('loginEmail').value;
+  const codigo=document.getElementById('loginCodigo').value;
+  const res=await fetch('http://localhost:8080/login',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email,codigo})
+  });
+  const data=await res.json();
+  const msg=document.getElementById('mensagem');
+  msg.innerText=data.mensagem;
+  msg.style.color=data.status==='sucesso'?'green':'red';
+  if(data.status==='sucesso'){ setTimeout(()=>{window.location.href='cursos.html'},1500);}
+}
+</script>
+
+</body>
+</html>
